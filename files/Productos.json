@@ -1,0 +1,74 @@
+[
+	{
+		"code": "PR01",
+		"title": "New York",
+		"description": "Salmon, queso philadelphia y palta",
+		"price": 2100,
+		"thumbnail": "New York.jpg",
+		"stock": 50,
+		"id": 1
+	},
+	{
+		"code": "PR02",
+		"title": "Buenos Aires",
+		"description": "Langostino, queso philadelphia y palta, con salmon por fuera",
+		"price": 2300,
+		"thumbnail": "Buenos Aires.jpg",
+		"stock": 50,
+		"id": 2
+	},
+	{
+		"code": "PR03",
+		"title": "Philadelphia",
+		"description": "Salmon y queso philadelphia",
+		"price": 2100,
+		"thumbnail": "Philadelphia.jpg",
+		"stock": 50,
+		"id": 3
+	},
+	{
+		"code": "PR04",
+		"title": "Tamago",
+		"description": "Salmon, queso philadelphia y ciboullette",
+		"price": 2400,
+		"thumbnail": "Tamago.jpg",
+		"stock": 45,
+		"id": 4
+	},
+	{
+		"code": "PR05",
+		"title": "Soul",
+		"description": "Salmon y palmito, envuelto en queso",
+		"price": 2600,
+		"thumbnail": "Soul.jpg",
+		"stock": 40,
+		"id": 5
+	},
+	{
+		"code": "PR06",
+		"title": "Placer",
+		"description": "Queso, palta y palmito, envuelto en salmon y coronado con batata crocante",
+		"price": 2600,
+		"thumbnail": "Placer.jpg",
+		"stock": 40,
+		"id": 6
+	},
+	{
+		"code": "PR07",
+		"title": "Hot Mex",
+		"description": "Salmon y queso chedar, empanado y frito",
+		"price": 2600,
+		"thumbnail": "TamHot Mexago.jpg",
+		"stock": 30,
+		"id": 7
+	},
+	{
+		"code": "PR08",
+		"title": "Niguiri",
+		"description": "Salmon con salsa sobre bocado de arroz",
+		"price": 1600,
+		"thumbnail": "Niguiri.jpg",
+		"stock": 20,
+		"id": 8
+	}
+]

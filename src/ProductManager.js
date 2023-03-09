@@ -1,32 +1,52 @@
 import fs from "fs";
+import express from "express";
 
 export default class ProductManager {
-    constructor() {
+    constructor(path) {
         this.products = [];
-        this.path = "./files/Productos.json";
+        this.path = path;
+    }
+    server = express();
+
+    returnObject = async () => {
+        const data = await fs.promises.readFile(this.path, 'utf-8');
+        const result = JSON.parse(data);
+        return result;
+        
     }
     
     getProducts = async () => {
-        try {     
-            const data = await fs.promises.readFile(this.path, 'utf-8');
-            
-            const result = JSON.parse(data);
-            return result;
+        try {
+            if (fs.existsSync(this.path)) {
+                const data = await fs.promises.readFile(this.path, 'utf-8');
+                // valorArchivo= new Blob([data]).size;
+                // if(valorArchivo!=0){
+
+                // }
+                const result = JSON.parse(data);
+                return result;
+            } else {
+                return [];
+            }
+
         } catch (error) {
-            console.error(`Error to read the file ${this.path}`);
+            console.error(`Error to read the file ${this.path} ${error}`);
             return [];
         }
-    }
 
+    }
     addProduct = async (code, title, description, price, thumbnail, stock) => {
        
         try {
-            let products = await this.getProducts();
+            
             if (!code || !title || !description || !price || !thumbnail || !stock) {
                 console.log("Obligatory fields")
                 return;
             }
+            let products = await this.getProducts();
+
             let productRepeated = products.find((element) => element.code === code);
+
             if (productRepeated) {
                 return `The field code ${code} is repeated so this product cannot be save in the list`;
             }
