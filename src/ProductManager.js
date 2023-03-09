@@ -14,7 +14,6 @@ export default class ProductManager {
         return result;
         
     }
-    
     getProducts = async () => {
         try {
             if (fs.existsSync(this.path)) {
@@ -66,7 +65,6 @@ export default class ProductManager {
             console.log(error);
         }
     }
-
     getProductById = async (id) => {
         try {
             if (fs.existsSync(this.path)) {
@@ -82,7 +80,6 @@ export default class ProductManager {
             console.log(error);
         }
     }
-
     deleteProducts = async (id) => {
         const products = await this.getProducts()
         let productFounded = products.find((product) => product.id === id)
@@ -101,7 +98,6 @@ export default class ProductManager {
             return `The product to delete with the id: ${id} does not exist in the list`
         }
     }
-
     updateProduct = async (id, code, title, description, price, thumbnail, stock) => {
         try {
             const products = await this.getProducts();
