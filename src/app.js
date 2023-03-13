@@ -51,6 +51,7 @@ const operacionesProductos = async () =>{
     
 }
 
+
 operacionesProductos()
 
 
