@@ -1,66 +1,66 @@
 import fs from "fs";
 import express from "express";
+import { Blob } from "buffer";
+
 
 export default class ProductManager {
-    constructor(path) {
+    constructor() {
         this.products = [];
-        this.path = path;
+        this.pathfiles = "./files";
+        this.path = "./files/Products.json";
     }
-    server = express();
 
+    productServer = express();
     returnObject = async () => {
         const data = await fs.promises.readFile(this.path, 'utf-8');
         const result = JSON.parse(data);
         return result;
-        
     }
+
     getProducts = async () => {
         try {
+            if (!fs.existsSync(this.pathfiles)) {
+                fs.mkdirSync(this.pathfiles)
+            }
             if (fs.existsSync(this.path)) {
-                const data = await fs.promises.readFile(this.path, 'utf-8');
-                // valorArchivo= new Blob([data]).size;
-                // if(valorArchivo!=0){
 
-                // }
-                const result = JSON.parse(data);
-                return result;
+                const data = await fs.promises.readFile(this.path, 'utf-8');
+
+                const size = new Blob([data]).size;
+                if (size > 0) {
+                    const result = JSON.parse(data);
+                    return result;
+                } else {
+                    return [];
+                }
             } else {
                 return [];
             }
-
         } catch (error) {
-            console.error(`Error to read the file ${this.path} ${error}`);
-            return [];
+            console.log(error)
         }
 
     }
-    addProduct = async (code, title, description, price, thumbnail, stock) => {
-       
+    addProduct = async (productObject) => {
+
         try {
-            
-            if (!code || !title || !description || !price || !thumbnail || !stock) {
-                console.log("Obligatory fields")
-                return;
-            }
-            let products = await this.getProducts();
 
-            let productRepeated = products.find((element) => element.code === code);
+            productObject.stock > 0
+                ? productObject = { status: true, ...productObject }
+                : productObject = { status: false, ...productObject }
 
-            if (productRepeated) {
-                return `The field code ${code} is repeated so this product cannot be save in the list`;
+            const products = await this.getProducts();
+            const productIndex = await products.findIndex((prod) => prod.code === productObject.code);
+
+            if (productIndex === -1) {
+                products.length === 0
+                    ? productObject = { id: 1, ...productObject }
+                    : productObject = { id: products[products.length - 1].id + 1, ...productObject }
+                products.push(productObject);
+                await fs.promises.writeFile(this.path, JSON.stringify(products, null, "\t"));
+                return productObject;
             }
-            const product = {
-                code,
-                title,
-                description,
-                price,
-                thumbnail,
-                stock,
-                id: this.products.length + 1
-            }
-            products.push(product);
-            await fs.promises.writeFile(this.path, JSON.stringify(products, null, "\t"));
-            return products;
+
         } catch (error) {
             console.log(error);
         }
@@ -70,57 +70,57 @@ export default class ProductManager {
             if (fs.existsSync(this.path)) {
                 const result = await this.getProducts();
                 let indexValue = result.find((event) => event.id === id);
-                if (!indexValue) {
-                    return "This product with this ID does not exist in the file";
-                } else {
-                    return indexValue;
-                }
+                return indexValue;
             }
         } catch (error) {
             console.log(error);
         }
+
     }
     deleteProducts = async (id) => {
-        const products = await this.getProducts()
-        let productFounded = products.find((product) => product.id === id)
-        if (productFounded) {
-            try {
-                const valor = this.products.filter((event) => event.id != id);
-
-                this.products = valor;
-
+        try {
+            const products = await this.getProducts()
+            let productFounded = products.findIndex((product) => product.id === id)
+            if (productFounded !== -1) {
+                const valor = products.filter((event) => event.id != id);
                 await fs.promises.writeFile(this.path, JSON.stringify(valor, null, "\t"))
                 return "Product eliminated";
-            } catch (error) {
-                console.log(error);
+            } else {
+                return productFounded;
             }
-        } else {
-            return `The product to delete with the id: ${id} does not exist in the list`
+        } catch (error) {
+            console.log(error)
         }
+
     }
-    updateProduct = async (id, code, title, description, price, thumbnail, stock) => {
+    updateProduct = async (idUpdate, productUpdate) => {
         try {
             const products = await this.getProducts();
             if (products === "error") {
                 return "The file is empty";
             }
-            let productExists = products.find((product) => product.id === id)
-            if (productExists != undefined) {
-                const productToModify = products.filter((product) => product.id === id);
-                const productModified = {
-                    code: code ?? productToModify[0].code,
-                    title: title ?? productToModify[0].title,
-                    description: description ?? productToModify[0].description,
-                    price: price ?? productToModify[0].price,
-                    thumbnail: thumbnail ?? productToModify[0].thumbnail,
-                    stock: stock ?? productToModify[0].stock,
-                    id: id
+            let productExists = products.findIndex((product) => product.id === idUpdate)
+            if (productExists !== -1) {
+
+                const productToModify = products.filter((product) => product.id === idUpdate);
+
+                const modifiedProduct = {
+                    id: idUpdate,
+                    title: productUpdate.title ?? productToModify[0].title,
+                    description: productUpdate.description ?? productToModify[0].description,
+                    code: productUpdate.code ?? productToModify[0].code,
+                    status: productUpdate.status ?? productToModify[0].status,
+                    price: productUpdate.price ?? productToModify[0].price,
+                    category: productUpdate.category ?? productToModify[0].category,
+                    thumbnail: productUpdate.thumbnail ?? productToModify[0].thumbnail,
+                    stock: productUpdate.stock ?? productToModify[0].stock
                 }
-                products[id - 1] = productModified;
+                products[idUpdate - 1] = modifiedProduct;
+
+                //console.log(this.products)
                 await fs.promises.writeFile(this.path, JSON.stringify(products, null, "\t"));
-                return "Product updated";
             } else {
-                return `The product to update with the id ${id} does not exist in the list`;
+                return productExists;
             }
         } catch (error) {
             console.log(error)
