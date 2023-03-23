@@ -1,58 +1,37 @@
-import ProductManager from './ProductManager.js';
 import express from "express";
+import productsRouter from './routes/products.router.js';
+import cartrouter from './routes/cart.router.js'
+import viewrouter from './routes/views.router.js'
+import handlebars from 'express-handlebars'
+import __dirname from "./utils.js";
+
+const productServer = express();
+import {Server} from 'socket.io';
+import socket from './socket.js'
 
 
-const manager = new ProductManager();
-
-const server = express();
-
-const operacionesProductos = async () =>{
-    server.get("/products", async (req, res) => {
-        try {
-            const consulta = await manager.getProducts();
-            let limit = Number.parseInt(req.query.limit)
-    
-            if (limit) {
-             
-                const resultado = consulta.slice(0, limit);
-                res.send(resultado);
-            } else {
-          
-                res.send(consulta);
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    });
-    
-    server.get("/products/:pid", async (req, res) => {
-        try {
-            let id = req.params.pid
-            console.log(id)
-            const consultaId = await manager.getProductById(Number.parseInt(id));
-            if (!consultaId) {
-                console.log("ej");
-                return res.send({ error: "El producto con ese id no se encuentra en el archivo" });
-            } else {
-                res.send(consultaId);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    });
-    
-    server.listen(8080, () => {
-        try {
-            console.log("Servidor arriba en el puerto 8080");
-        } catch (error) {
-            console.log(error);
-        }
-    });
-    
-}
+productServer.use(express.json());
+productServer.use(express.urlencoded({ extended: true }));
 
 
-operacionesProductos()
+productServer.engine("handlebars",handlebars.engine());
+productServer.set("views",`${__dirname}/views`);
+productServer.set("view engine","handlebars");
+
+
+productServer.use("/api/products", productsRouter);
+productServer.use("/api/carts",cartrouter);
+productServer.use(express.static(`${__dirname}/public`));
+productServer.use("/",viewrouter);
+const httpServer=productServer.listen(8080, () => {
+    try {
+        console.log("Servidor arriba en el puerto 8080");
+    } catch (error) {
+        console.log(error);
+    }
+});
+socket.connect(httpServer)
+
 
 
 
