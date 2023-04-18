@@ -1,43 +1,22 @@
-import ProductManager from '../ProductManager.js';
 import { Router } from "express";
 import { uploader } from '../utils.js';
+import ProductdbManager from "../dao/dbManagers/productdbManager.js";
+import { productModel } from "../dao/models/product.model.js";
 
 const router = Router();
 
-const manager = new ProductManager();
 
+const productdbManager = new ProductdbManager();
 router.get("/", async (req, res) => {
     try {
-        const consulta = await manager.getProducts();
-
-        let limit = req.query.limit
+        const { limit = 10, page = 1, category = null, available = null, sort = null } = req.query
 
 
-        if (!consulta) {
-            return res.status(404).send({
-                message: { error: `No products found in the list` },
-            });
-        }
+        console.log(category, available)
+        let consulta = await productdbManager.getProducts(page, limit, category, available, sort);
 
-        if (limit) {
-            if (isNaN(limit)) {
-                return res.status(400).send({
-
-                    message: { error: `The limit written ${limit} is not a valid value` },
-                });
-            }
-            const resultado = consulta.slice(0, limit);
-
-            return res.status(200).send({
-                status: "success",
-                message: { products: resultado },
-            });
-        } else {
-            return res.status(200).send({
-                status: "success",
-                message: { products: consulta },
-            });
-        }
+        return res.send({ status: "Success", payload: consulta });
+       
     } catch (error) {
         console.log(error)
     }
@@ -45,17 +24,16 @@ router.get("/", async (req, res) => {
 
 router.get("/:pid", async (req, res) => {
     try {
-        let id = req.params.pid
+        let { pid } = req.params
 
 
-        const consultaId = await manager.getProductById(Number.parseInt(id));
-        if (typeof (consultaId) === "string") {
-            return res.status(400).send({ status: "error", message: consultaId });
+        const consultaId = await productdbManager.getProductsbyId(pid);
+        if (!consultaId) {
+            return res
+                .status(400)
+                .send({ status: "error", error: "The product does not exists" });
         }
-        return res.status(200).send({
-            status: "success",
-            message: { product: consultaId },
-        });
+        return res.send({ status: "success", payload: consultaId });
 
     } catch (error) {
         console.log(error);
@@ -65,91 +43,76 @@ router.get("/:pid", async (req, res) => {
 router.post("/", uploader.array("thumbnails"), async (req, res) => {
     let product = req.body;
 
-    let filesToadd = req.files
-    console.log(product)
 
 
 
-    if (!filesToadd) {
-        return res.status(400).send({
-            status: "error",
-            message: { error: `No se pudieron guardar las miniaturas` },
-        });
-    }
+
+    const filesToUpdate = req.files
+
     product.thumbnails = [];
-    if (filesToadd) {
-        filesToadd.forEach(files => {
-            const imgUrladd = `http://localhost:8080/images/${files.filename}`;
-            product.thumbnails.push(imgUrladd)
+
+    if (filesToUpdate) {
+        console.log(filesToUpdate)
+        filesToUpdate.forEach(files => {
+            const imgUrlUpdate = `http://localhost:8080/images/${files.filename}`;
+            product.thumbnails.push(imgUrlUpdate)
         });
     }
-    let result = await manager.addProduct(product);
-
-    if (typeof (result) === "string") {
-        return res.status(400).send({
-            status: "error",
-            message: { error: result },
-        });
+    const createProduct = await productdbManager.createProduct(product);
+    if (!createProduct) {
+        return res
+            .status(400)
+            .send({ status: "error", error: "Product already exists" });
     }
+    return res.send({ status: "success", payload: createProduct });
 
 
-    res.status(201).send({
-        status: "success",
-        message: {
-            success: `Product successfully added`
-
-        },
-    });
 });
 
 router.put("/:pid", uploader.array("thumbnails"), async (req, res) => {
     try {
+
         const product = req.body;
-        const id = req.params.pid;
-        const filesToUpdate=req.files
-        
+        const { pid } = req.params;
+
+
+        const filesToUpdate = req.files
+
         product.thumbnails = [];
+
+       
         if (filesToUpdate) {
+            console.log(filesToUpdate)
             filesToUpdate.forEach(files => {
                 const imgUrlUpdate = `http://localhost:8080/images/${files.filename}`;
                 product.thumbnails.push(imgUrlUpdate)
             });
         }
-        let result = await manager.updateProduct(Number.parseInt(id), product);
 
-        if (typeof (result) === "string") {
-            return res.status(404).send({
-                status: "error",
-                message: { error: result },
-            });
+
+        const result = await productdbManager.updateProduct(product, pid);
+        if (!product) {
+            return res.send({ status: "error", error: "Incomplete values" });
         }
-        return res.status(200).send({
-            status: "success",
-            message: { update: `The product was updated` },
-        });
+
+        return res.send({ status: "success", payload: result });
     } catch (error) {
         console.log(error);
     }
 })
+
 router.delete("/:pid", async (req, res) => {
     try {
-        const id = req.params.pid;
-        console.log(id)
+        const { pid } = req.params;
 
-        let result = await manager.deleteProducts(id);
-        if (typeof (result) === "string") {
+        let result = await productdbManager.deleteProduct(pid);
+        if (!result) {
             return res.status(404).send({
                 status: "error",
-                message: { error: result },
+                error: "Could not delete this product. No products founded with this ID in the database",
             });
         }
-
-        return res.status(200).send({
-            status: "success",
-            message: {
-                delete: `The product was sucessfully eliminated`,
-            },
-        });
+        res.send({ status: "Success", payload: result });
 
     } catch (error) {
         console.log(error);

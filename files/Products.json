@@ -5,7 +5,6 @@
 		"description": "Salmon, queso philadelphia y palta",
 		"price": 2100,
 		"category": "Roll Clasico",
-		"status": true,
 		"stock": 50,
 		"id": 1
 	},
@@ -15,7 +14,6 @@
 		"description": "Langostino, queso philadelphia y palta, con salmon por fuera",
 		"price": 2300,
 		"category": "Roll Clasico",
-		"status": true,
 		"stock": 50,
 		"id": 2
 	},
@@ -25,7 +23,6 @@
 		"description": "Salmon y queso philadelphia",
 		"price": 2100,
 		"category": "Roll Clasico",
-		"status": true,
 		"stock": 50,
 		"id": 3
 	},
@@ -35,7 +32,6 @@
 		"description": "Salmon, queso philadelphia y ciboullette",
 		"price": 2400,
 		"category": "Roll Especial",
-		"status": true,
 		"stock": 45,
 		"id": 4
 	},
@@ -45,7 +41,6 @@
 		"description": "Salmon y palmito, envuelto en queso",
 		"price": 2600,
 		"category": "Roll Especial",
-		"status": true,
 		"stock": 40,
 		"id": 5
 	},
@@ -55,7 +50,6 @@
 		"description": "Queso, palta y palmito, envuelto en salmon y coronado con batata crocante",
 		"price": 2600,
 		"category": "Roll Especial",
-		"status": true,
 		"stock": 40,
 		"id": 6
 	},
@@ -65,7 +59,6 @@
 		"description": "Salmon y queso chedar, empanado y frito",
 		"price": 2600,
 		"category": "Roll Especial",
-		"status": true,
 		"stock": 30,
 		"id": 7
 	},
@@ -75,7 +68,6 @@
 		"description": "Salmon con salsa sobre bocado de arroz",
 		"price": 1600,
 		"category": "Niguiri",
-		"status": true,
 		"stock": 20,
 		"id": 8
 	}
