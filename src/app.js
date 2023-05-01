@@ -35,7 +35,7 @@ const httpServer = productServer.listen(8080, () => {
     }
 });
 mongoose.connect(
-    `mongodb+srv://${user}:${password}@codercluster.fwoec0u.mongodb.net/${database}?retryWrites=true&w=majority`
+    `mongodb+srv://agus2465:FjNfgNb6TRJ4xlRJ@cluster0.timqa3m.mongodb.net/?retryWrites=true&w=majority`
 )
 
 //productServer.use("/chat",chatRouter);
