@@ -1,3 +1,19 @@
+<nav class="navbar navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Informatic supplies</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" id="home">Home</a>
+        </li>
+      </ul>
+      <div><button id="logout">Log out</button></div>
+    </div>
+  </div>
+</nav>
 <div id="app">
     <h1 id="productId">Details of the product with the ID
         {{product._id}}</h1>
@@ -5,7 +21,7 @@
         <div id="product-{{product._id}}" class="max-w-sm border rounded-lg shadow bg-gray-800 border-gray-700 m-1">
             <div>
                 {{#each product.thumbnails}}
-                <img src="http://localhost:8080/{{this}}" alt="product image" />
+                <img src="{{this}}" alt="product image" />
                 {{/each}}
             </div>
             <div>
@@ -36,42 +52,3 @@
 https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js
 "></script>
 <script src="/js/product.js"></script>
-{{!-- <div class="w-auto mx-2">
-    <br />
-    <hr /><br />
-</div>
-<div class="flex justify-between w-auto m-2 bg-gray-800 px-8 py-8 rounded-xl">
-    <h3 class="flex p-2 justify-center font-mono text-lg text-slate-200">Go back
-        to the homepage:</h3>
-    <a href="/">
-        <button
-            class="text-slate-100 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center mr-2">Take
-            me home! 🏚️</button>
-    </a>
-</div>
-<div class="w-auto mx-2">
-    <br />
-    <hr /><br />
-</div> --}}
-{{!-- <div class="flex justify-between w-auto m-2 bg-gray-800 px-8 py-8 rounded-xl">
-    <h3 class="flex p-2 justify-center font-mono text-lg text-slate-200">Check
-        our work with Socket.io, MongoDB and Mongoose:</h3>
-    <a href="/realTimeProducts">
-        <button
-            class="text-slate-100 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center mr-2">Go
-            to Real Time section! 🛩️</button>
-    </a>
-</div>
-<div class="w-auto mx-2">
-    <br />
-    <hr /><br />
-</div> --}}
-{{!-- <div class="flex justify-between w-auto m-2 bg-gray-800 px-8 py-8 rounded-xl">
-    <h3 class="flex p-2 justify-center font-mono text-lg text-slate-200">Chat
-        with us:</h3>
-    <a href="/chat">
-        <button
-            class="text-slate-100 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center mr-2">Go
-            to chat section! 💬</button>
-    </a>
-</div> --}}
