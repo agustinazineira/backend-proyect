@@ -8,6 +8,7 @@ const productmanager = new ProductManager();
 const cartdbManager = new CartdbManager();
 router.get("/products",checkLogin, async (req, res) => {
   const { limit = 2, page = 1, category, usable, sort } = req.query;
+  console.log(req.session.user);
   const {
     docs: products,
     hasPrevPage,
@@ -16,6 +17,7 @@ router.get("/products",checkLogin, async (req, res) => {
     prevPage,
   } = await productmanager.getProducts(page, limit, category, usable, sort);
   res.render("products", {
+  
     user:req.session.user,
     products,
     page,
@@ -31,6 +33,7 @@ router.get("/product/:pid", checkLogin,async (req, res) => {
   const { pid } = req.params;
   const product = await productmanager.getProductsbyId(pid);
   res.render("product", {
+    user:req.session.user,
     product,
 
   });
@@ -40,7 +43,6 @@ router.get("/cart/:cid", checkLogin,async (req, res) => {
   const cart = await cartdbManager.getCartsbyId(cid);
   res.render("cart", {
     cart,
-
   });
 });
 

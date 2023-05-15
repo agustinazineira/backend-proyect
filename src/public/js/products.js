@@ -1,14 +1,16 @@
 const addToCartForms = document.querySelectorAll('[id^="addToCartForm-"]');
-const logout= document.getElementById("logout")
+let cId=document.getElementById("cid").value
+
 addToCartForms.forEach((form) => {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    const cartId = form.querySelector("#cid").value;
+    // const cartId = form.querySelector("#cid").value;
+    // alert(cartId+"fsfsdf")
     const productId = form.getAttribute("id").split("-")[1];
 
     const prodTitle = form.closest("div").querySelector("h5").textContent;
-
-    fetch(`/api/carts/${cartId}/product/${productId}`, {
+    
+    fetch(`/api/carts/${cId}/product/${productId}`, {
       method: "POST",
     })
       .then(() => {

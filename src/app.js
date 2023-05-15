@@ -30,7 +30,7 @@ productServer.use(
   session({
     store: MongoStore.create({
       mongoUrl: config.dbUrl,
-      ttl:20
+      ttl:60
     }),
     resave: true,
     saveUninitialized: false,
@@ -59,11 +59,16 @@ const httpServer = productServer.listen(8080, () => {
 database.connect();
 //productServer.use("/chat",chatRouter);
 productServer.use("/api/sessions", sessionsRouter);
-productServer.use("/", viewrouter);
+
 productServer.use("/api/products", productsRouter);
 
 productServer.use("/api/carts", cartrouter);
+productServer.use("/", viewrouter);
 socket.connect(httpServer)
+
+
+
+
 
 
 

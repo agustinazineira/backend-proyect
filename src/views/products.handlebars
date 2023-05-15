@@ -10,11 +10,9 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="products">Home</a>
         </li>
-
-  
-          
       </ul>
-      <div><button id="createCart">New cart</button></div>
+      <div><a href="cart/{{user.cart}}"><button>Show cart</button></a></div>
+ 
       <div><button id="logout">Log out</button></div>
     </div>
   </div>
@@ -25,6 +23,8 @@
   <h2>{{user.email}}</h2>
   <h2>{{user.age}}</h2>
   <h2>{{user.role}}</h2>
+  <input type="text" name="cid" id="cid" value={{user.cart}} style="display:none"/>
+  
   <h2 class="flex p-2 justify-center font-mono text-2xl text-slate-200">Products list</h2>
   <h2 class="flex p-2 justify-center font-mono text-xl text-slate-200">Check our
     products:</h2>
@@ -50,10 +50,10 @@
             <button type="submit">Add
               to cart 🛒</button>
           </div>
-          <div>
-            <input placeholder=" " type="text" name="cid" id="cid" required />
+          {{!-- <div>
+
             <label for="cid">Cart ID</label>
-          </div>
+          </div> --}}
 
         </form>
         <a href="product/{{this._id}}">

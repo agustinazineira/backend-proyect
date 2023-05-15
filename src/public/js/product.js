@@ -1,19 +1,21 @@
 const logout= document.getElementById("logout")
 const formButton= document.getElementById('botonForm');
+let cId=document.getElementById("cid").value
+let pId=document.getElementById('pid').value;
 // addToCart.forEach((form) => {
 const home=document.getElementById("home");
   formButton.addEventListener("click", (e) => {
     e.preventDefault();
     // alert(form.getAttribute("id"))
-    const cartId = document.querySelector("#cid").value;
+   
 
     // const productId = form.getAttribute("id").split("-")[1];
-    const prod=document.getElementById('productId');
-    const value=prod.innerText.split(" ")[4]
+    
+
     const title=document.getElementById("title")
     // const prodTitle = form.closest("div").querySelector("h5").textContent;
 
-    fetch(`/api/carts/${cartId}/product/${value}`, {
+    fetch(`/api/carts/${cId}/product/${pId}`, {
       method: "POST",
     })
       .then(() => {
@@ -65,3 +67,4 @@ const home=document.getElementById("home");
   
   })
   
+// });

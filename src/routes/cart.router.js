@@ -2,7 +2,7 @@
 import CartManager from "../dao/fileManagers/CartManager.js";
 import CartdbManager from "../dao/dbManagers/cartdbManager.js";
 import { Router } from "express";
-import { cartModel } from "../dao/models/cart.model.js";
+import {cartModel}  from "../dao/models/cart.model.js";
 
 const router = Router();
 
@@ -41,15 +41,26 @@ router.post("/", async (req, res) => {
 
 router.get("/:cid", async (req, res) => {
     try {
-        const { cid } = req.params
-        const findcart = await cartdbmanager.getCartsbyId(cid);
-        console.log(cid)
-        if (!findcart) {
-            return res
-                .status(400)
-                .send({ status: "error", error: "The cart does not exists" });
+        const cartId = req.params.cid;
+        console.log(cartId)
+        const cart = await cartdbmanager.getCartsbyId(cartId);
+      
+        if (!cart) {
+          return res.status(404).send({
+            status: "Error",
+            error: "cart was not found",
+          });
         }
-        return res.send({ status: "success", payload: findcart });
+        return res.send({ status: "OK", message: "Cart found", payload: cart });
+        // const cid  = req.params.cid
+        // const findcart = await cartdbmanager.getCartsbyId(cid);
+        // console.log(cid)
+        // if (!findcart) {
+        //     return res
+        //         .status(400)
+        //         .send({ status: "error", error: "The cart does not exists" });
+        // }
+        // return res.send({ status: "success", payload: findcart });
         // if (typeof(cart)==="string") {
         //     return res.status(404).send({
         //         status: "error",

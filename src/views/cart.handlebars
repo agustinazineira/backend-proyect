@@ -2,34 +2,32 @@
 
   <h1 class="flex p-2 justify-center font-mono text-2xl text-slate-200">Details
     for Cart ID
-    <span id="cartId">{{cart._id}}</span></h1>
+    <span id="cartId">{{cart._id}}</span>
+  </h1>
   <div id="cartDetail" class="flex flex-col justify-center m-6 items-center">
     {{#each cart.products}}
-      <div
-        class="max-w-4xl border rounded-lg shadow bg-gray-700/50 border-gray-600 my-2"
-        id="{{this.productId._id}}"
-      >
-        <div class="flex flex-wrap w-full p-2 justify-evenly">
-          <div class="px-5 mt-2">
-            <h5
-              class="text-2xl font-semibold tracking-tight text-black text-center"
-            >{{this.productId.title}}</h5>
-            <p class="font-light tracking-tight text-black my-1">Selected quantity: {{this.quantity}}</p>
-            <p class="font-light tracking-tight text-black my-1">Unit price: ${{this.productId.price}}</p>
-            <div class="flex justify-between">
-            {{!-- <p class="text-lg tracking-wider text-white my-1"
-            {{!-- >Total price: ${{multiply this.productId.price this.quantity}}</p> --}}
-            </div>
+    <div class="max-w-4xl border rounded-lg shadow bg-gray-700/50 border-gray-600 my-2" id="{{this.productId._id}}">
+      <div>
+        {{#each this.productId.thumbnails}}
+        <img src="{{this}}" alt="product image" />
+        {{/each}}
+      </div>
+      <div class="flex flex-wrap w-full p-2 justify-evenly">
+        <div class="px-5 mt-2">
+          <h5 class="text-2xl font-semibold tracking-tight text-black text-center">{{this.productId.title}}</h5>
+          <p class="font-light tracking-tight text-black my-1">Selected quantity: {{this.quantity}}</p>
+          <p class="font-light tracking-tight text-black my-1">Unit price: ${{this.productId.price}}</p>
+          <div class="flex justify-between">
           </div>
         </div>
-
       </div>
+
+    </div>
     {{/each}}
   </div>
- 
-<script
-  src="
+  <a href="/products"><button>Volver</button></a>
+</div>
+  <script src="
 https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js
-"
-></script>
-<script src="/js/cart.js"></script>
+"></script>
+  <script src="/js/cart.js"></script>
